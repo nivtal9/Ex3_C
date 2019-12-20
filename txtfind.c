@@ -5,57 +5,6 @@
 #include "stdio.h"
 #include "txtfind.h"
 #include "string.h"
-int lines250=0;
-int getLine(char s[]){
-    if(lines250>250){
-        return -1;
-    }
-    int count=0;
-    char ch=*(s);
-    s[0]=ch;
-    for (int i = 0; i <=LINE+1; i++) {
-        if(s[i]!='\n'&&s[i]!='\0') {
-            count++;
-            ch=*(count+s);
-            s[count]=ch;
-            if(count>LINE){
-                return -1;
-            }
-        }
-        else{
-            s[count]='\0';
-            lines250++;
-            break;
-        }
-    }
-    return count;
-}
-int getWord(char w[]){
-    if(lines250>250){
-        return -1;
-    }
-    int count=0;
-    char ch=*(w);
-    w[0]=ch;
-    for (int i = 0; i <=WORD+1; i++) {
-        if(w[i]!='\n'&&w[i]!='\0'&&w[i]!=' '&&w[i]!='\t') {
-            count++;
-            ch=*(count+w);
-            w[count]=ch;
-            if(count>WORD){
-                return -1;
-            }
-        }
-        else{
-            w[count]='\0';
-            if(w[i]=='\n'){
-                lines250++;
-            }
-            break;
-        }
-    }
-    return count;
-}
 int substring(char * str1,char * str2){
     if(strstr(str1, str2) != NULL){
         return 1;
@@ -84,61 +33,40 @@ int similar(char *s,char*t,int n){
     return ans;
 }
 void print_similar_words(char * str){
-    int TotalChars=strlen(str);
-    int TotalLinesCounter=0;
-    char nextWord[WORD];
-    strcpy(nextWord,str);
-    int temp=getWord(nextWord);
-    char nextText[LINE*TOTALLINE];
-    strcpy(nextText,str);
-    temp=0;
-    int temp2=getLine(nextText);
-    while(TotalChars>temp+temp2&&TotalLinesCounter<TOTALLINE){
-        TotalLinesCounter++;
-        temp+=temp2+1;
-        str=str+temp2+1;
-        strcpy(nextText,str);
-        temp2=getLine(nextText);
-        char WordsInLine[LINE];
-        int WordsInLineCount=0;
-        while(WordsInLineCount<temp2){
-            strcpy(WordsInLine,nextText+WordsInLineCount);
-            WordsInLineCount+=getWord(WordsInLine)+1;
-            if(similar(WordsInLine,nextWord,1)==1){
-                printf("%s\n",WordsInLine);
-                break;
+    int i=  0;
+    char similar_word[WORD] =  {{0}};
+    char c=  NULL;
+    while ( (c = getc ( stdin )!=EOF ) ){
+        if(  c == ' '  ||  c == '\n'  ||  c == '\t'  ){
+            similar_word[ i ]  =  '\0';
+            i =  0 ;
+            if (similar( similar_word,  str,  1) ==  1){
+                printf( " %s\n",  similar_word);
             }
         }
-        strcpy(WordsInLine,nextText);
+        else
+            similar_word[ i++ ] =  c;
     }
 
 }
 void print_lines(char * str){
-    int TotalChars=strlen(str);
-    int TotalLinesCounter=0;
-    char nextWord[WORD];
-    strcpy(nextWord,str);
-    int temp=getWord(nextWord);
-    char nextText[LINE*TOTALLINE];
-    strcpy(nextText,str);
-    temp=0;
-    int temp2=getLine(nextText);
-    while(TotalChars>temp+temp2&&TotalLinesCounter<TOTALLINE){
-        TotalLinesCounter++;
-        temp+=temp2+1;
-        str=str+temp2+1;
-        strcpy(nextText,str);
-        temp2=getLine(nextText);
-        char WordsInLine[LINE];
-        int WordsInLineCount=0;
-        while(WordsInLineCount<temp2){
-            strcpy(WordsInLine,nextText+WordsInLineCount);
-            WordsInLineCount+=getWord(WordsInLine)+1;
-            if(similar(WordsInLine,nextWord,1)==1){
-                printf("%s\n",nextText);
-                break;
+    char similar_line [LINE] = {{0}};
+    char c=  NULL;
+    int i =  0;
+    while ( (c = getc(stdin)) !=  EOF){
+        i =  1;
+        similar_line[ 0 ] =  c;
+        while ('\n'!=(c = getc(stdin)) && 0<c){
+
+            similar_line[ i++ ] =  c;
+        }
+        similar_line[ i ] = '\n';
+        if (substring (similar_line, str) ==  1) {
+            printf(" %s", similar_line);
+            int j = 0;
+            while (j < LINE) {
+                similar_line[j++] = 0;
             }
         }
-        strcpy(WordsInLine,nextText);
     }
 }
