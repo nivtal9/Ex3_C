@@ -33,6 +33,9 @@ int similar(char *s,char*t,int n){
     return ans;
 }
 void print_similar_words(char * str){
+    if(strlen(str)>LINE*TOTALLINE){
+        return;
+    }
     int i=  0;
     char similar_word[WORD] =  {{0}};
     char c=  NULL;
@@ -50,6 +53,9 @@ void print_similar_words(char * str){
 
 }
 void print_lines(char * str){
+    if(strlen(str)>LINE*TOTALLINE){
+        return;
+    }
     char similar_line [LINE] = {{0}};
     char c=  NULL;
     int i =  0;

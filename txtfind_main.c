@@ -2,24 +2,24 @@
 #include "txtfind.h"
 
 int main() {
-    char c;
-    char w[WORD];
+    char command;
+    char text[WORD];
     int i = 0;
     char compare1 = ' ';
     char compare2 = '\n';
-    while ((c = getc(stdin)) != compare1) {
-        w[i++] = c;
+    while ((command = getc(stdin)) != compare1) {
+        text[i++] = command;
     }
-    w[i] = '\0';
+    text[i] = '\0';
     char key;
-    while ((c = getc(stdin)) != compare2) {
-        key = c;
+    while ((command = getc(stdin)) != compare2) {
+        key = command;
     }
     if (key == 'a') {
-        print_lines(w);
+        print_lines(text);
     }
     if (key == 'b') {
-        print_similar_words(w);
+        print_similar_words(text);
     }
     if (key != 'a' && key != 'b') {
         printf("Wrong command inserted(Not a/b), please try again!");
